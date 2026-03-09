@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
 import { Search, X, Film, Tv, BarChart2, GitCompare } from 'lucide-react'
 import { tmdb } from '../../services/tmdb'
+import { VaultLogo } from '../ui/AnimatedText'
 import styles from './Navbar.module.css'
 
 export default function Navbar() {
@@ -47,7 +48,7 @@ export default function Navbar() {
       <nav className={`${styles.nav} ${scrolled ? styles.scrolled : ''}`}>
         <Link to="/" className={styles.logo}>
           <span className={styles.logoMark}>RV</span>
-          <span className={styles.logoText}>RatingVault</span>
+          <VaultLogo className={styles.logoText} />
         </Link>
 
         <div className={styles.links}>

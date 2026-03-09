@@ -7,6 +7,7 @@ import SeasonRadar from '../components/charts/SeasonRadar'
 import PageTransition from '../components/transitions/PageTransition'
 import PosterMorph from '../components/transitions/PosterMorph'
 import RatingPulse from '../components/ui/RatingPulse'
+import { GradientText, TypewriterText } from '../components/ui/AnimatedText'
 import styles from './TitleDetail.module.css'
 
 export default function TitleDetail() {
@@ -120,7 +121,9 @@ export default function TitleDetail() {
                 )}
               </div>
 
-              <h1 className={styles.title}>{data.title || data.name}</h1>
+              <h1 className={styles.title}>
+                <GradientText>{data.title || data.name}</GradientText>
+              </h1>
 
               {data.tagline && <p className={styles.tagline}>"{data.tagline}"</p>}
 
@@ -129,8 +132,10 @@ export default function TitleDetail() {
               {/* Genres */}
               {data.genres?.length > 0 && (
                 <div className={styles.genres}>
-                  {data.genres.map(g => (
-                    <span key={g.id} className={styles.genre}>{g.name}</span>
+                  {data.genres.map((g, i) => (
+                    <span key={g.id} className={styles.genre} style={{ animationDelay: `${i * 150}ms` }}>
+                      <TypewriterText>{g.name}</TypewriterText>
+                    </span>
                   ))}
                 </div>
               )}

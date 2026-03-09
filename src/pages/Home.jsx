@@ -4,6 +4,7 @@ import { useReducedMotion } from 'framer-motion'
 import { tmdb } from '../services/tmdb'
 import PageTransition from '../components/transitions/PageTransition'
 import PosterMorph from '../components/transitions/PosterMorph'
+import { ChromeText } from '../components/ui/AnimatedText'
 import styles from './Home.module.css'
 
 export default function Home() {
@@ -61,11 +62,13 @@ export default function Home() {
               <span className={styles.heroPill}>
                 {hero.media_type === 'movie' ? 'Film' : 'Series'} · Trending Now
               </span>
-              <h1 className={styles.heroTitle}>{hero.title || hero.name}</h1>
+              <h1 className={styles.heroTitle}>
+                <ChromeText>{hero.title || hero.name}</ChromeText>
+              </h1>
               <p className={styles.heroOverview}>{hero.overview?.slice(0, 200)}…</p>
               <div className={styles.heroMeta}>
                 <span className={styles.heroRating}>
-                  <span className={styles.heroRatingNum}>{hero.vote_average?.toFixed(1)}</span>
+                  <ChromeText className={styles.heroRatingNum}>{hero.vote_average?.toFixed(1)}</ChromeText>
                   <span className={styles.heroRatingLabel}>/ 10</span>
                 </span>
                 <span className={styles.heroDivider} />
