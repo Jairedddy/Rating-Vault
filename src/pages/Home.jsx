@@ -15,14 +15,20 @@ export default function Home() {
   const reduced = useReducedMotion()
 
   useEffect(() => {
-    tmdb.trending('all', 'week').then(data => {
-      const items = (data.results || []).filter(r =>
-        (r.media_type === 'movie' || r.media_type === 'tv') && r.backdrop_path
-      )
-      setHero(items[0] || null)
-      setTrending(items.slice(1, 13))
-      setLoading(false)
-    }).catch(() => setLoading(false))
+    const fetchTrending = (retry = 1) => {
+      tmdb.trending('all', 'week').then(data => {
+        const items = (data.results || []).filter(r =>
+          (r.media_type === 'movie' || r.media_type === 'tv') && r.backdrop_path
+        )
+        setHero(items[0] || null)
+        setTrending(items.slice(1, 13))
+        setLoading(false)
+      }).catch(() => {
+        if (retry > 0) return fetchTrending(retry - 1)
+        setLoading(false)
+      })
+    }
+    fetchTrending()
   }, [])
 
   // Parallax scroll effect on hero backdrop

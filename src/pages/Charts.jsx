@@ -35,10 +35,13 @@ export default function Charts() {
   useEffect(() => {
     if (data[activeTab]) return
     setLoading(true)
-    fetchers[activeTab]()
-      .then(d => setData(prev => ({ ...prev, [activeTab]: d.results || [] })))
-      .catch(() => {})
-      .finally(() => setLoading(false))
+    const fetch = (retry = 1) => {
+      fetchers[activeTab]()
+        .then(d => setData(prev => ({ ...prev, [activeTab]: d.results || [] })))
+        .catch(() => { if (retry > 0) return fetch(retry - 1) })
+        .finally(() => setLoading(false))
+    }
+    fetch()
   }, [activeTab])
 
   const items = data[activeTab] || []

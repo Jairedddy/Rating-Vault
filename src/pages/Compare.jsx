@@ -39,8 +39,8 @@ export default function Compare() {
     return () => clearTimeout(t)
   }, [rightQuery])
 
-  // Fetch full data when picked
-  const fetchFull = async (pick, side) => {
+  // Fetch full data when picked (auto-retry once on failure)
+  const fetchFull = async (pick, side, retry = 1) => {
     setLoading(prev => ({ ...prev, [side]: true }))
     try {
       if (pick.media_type === 'movie') {
@@ -54,6 +54,8 @@ export default function Compare() {
         if (side === 'left') { setLeftData(d); setLeftSeasons(seasons) }
         else { setRightData(d); setRightSeasons(seasons) }
       }
+    } catch (e) {
+      if (retry > 0) return fetchFull(pick, side, retry - 1)
     } finally {
       setLoading(prev => ({ ...prev, [side]: false }))
     }
