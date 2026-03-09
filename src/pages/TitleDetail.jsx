@@ -6,6 +6,7 @@ import EpisodeHeatmap from '../components/charts/EpisodeHeatmap'
 import SeasonRadar from '../components/charts/SeasonRadar'
 import PageTransition from '../components/transitions/PageTransition'
 import PosterMorph from '../components/transitions/PosterMorph'
+import RatingPulse from '../components/ui/RatingPulse'
 import styles from './TitleDetail.module.css'
 
 export default function TitleDetail() {
@@ -131,27 +132,24 @@ export default function TitleDetail() {
                 </div>
               )}
 
-              {/* Rating hero */}
+              {/* Rating heartbeat */}
               <div className={styles.ratingHero}>
-                <div className={styles.ratingMain}>
-                  <span className={styles.ratingNum} style={{ color: ratingColor }}>
-                    {formatRating(rating)}
-                  </span>
-                  <span className={styles.ratingOf}>/10</span>
-                </div>
-                <div className={styles.ratingDetails}>
-                  <span className={styles.ratingLabel} style={{ color: ratingColor }}>{ratingLabel}</span>
-                  <span className={styles.voteCount}>{data.vote_count?.toLocaleString()} votes</span>
-                </div>
-                {/* Rating bar */}
-                <div className={styles.ratingBarWrap}>
-                  <div
-                    className={styles.ratingBar}
-                    style={{
-                      width: `${(rating / 10) * 100}%`,
-                      background: ratingColor
-                    }}
-                  />
+                <div className={styles.ratingPulseRow}>
+                  <RatingPulse rating={rating} />
+                  <div className={styles.ratingMeta}>
+                    <span className={styles.ratingLabel} style={{ color: ratingColor }}>{ratingLabel}</span>
+                    <span className={styles.voteCount}>{data.vote_count?.toLocaleString()} votes</span>
+                    {/* Rating bar */}
+                    <div className={styles.ratingBarWrap}>
+                      <div
+                        className={styles.ratingBar}
+                        style={{
+                          width: `${(rating / 10) * 100}%`,
+                          background: ratingColor
+                        }}
+                      />
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>

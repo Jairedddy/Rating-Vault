@@ -133,39 +133,24 @@
 
 /* Rating hero */
 .ratingHero {
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-2);
   padding: var(--space-6);
   background: var(--bg-surface);
   border: 1px solid var(--border-subtle);
   border-radius: var(--radius-lg);
-  max-width: 360px;
+  max-width: 400px;
 }
 
-.ratingMain {
-  display: flex;
-  align-items: baseline;
-  gap: var(--space-2);
-}
-
-.ratingNum {
-  font-family: var(--font-display);
-  font-size: 56px;
-  font-weight: 300;
-  line-height: 1;
-}
-
-.ratingOf {
-  font-family: var(--font-mono);
-  font-size: 16px;
-  color: var(--text-muted);
-}
-
-.ratingDetails {
+.ratingPulseRow {
   display: flex;
   align-items: center;
-  gap: var(--space-4);
+  gap: var(--space-5);
+}
+
+.ratingMeta {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  flex: 1;
 }
 
 .ratingLabel {
