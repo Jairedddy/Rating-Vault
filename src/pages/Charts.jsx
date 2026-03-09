@@ -1,6 +1,8 @@
 import { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { tmdb, getRatingColor, formatRating } from '../services/tmdb'
+import PageTransition from '../components/transitions/PageTransition'
+import PosterMorph from '../components/transitions/PosterMorph'
 import styles from './Charts.module.css'
 
 const TABS = [
@@ -42,6 +44,7 @@ export default function Charts() {
   const items = data[activeTab] || []
 
   return (
+    <PageTransition>
     <div className={styles.page}>
       <div className={styles.inner}>
         <header className={styles.pageHeader}>
@@ -79,10 +82,12 @@ export default function Charts() {
                   </span>
 
                   <Link to={`/title/${mt}/${item.id}`} className={styles.rowLink}>
-                    {item.poster_path
-                      ? <img src={tmdb.poster(item.poster_path, 'w92')} alt="" className={styles.thumb} />
-                      : <div className={styles.thumbBlank} />
-                    }
+                    <PosterMorph layoutId={`poster-${mt}-${item.id}`}>
+                      {item.poster_path
+                        ? <img src={tmdb.poster(item.poster_path, 'w92')} alt="" className={styles.thumb} />
+                        : <div className={styles.thumbBlank} />
+                      }
+                    </PosterMorph>
                     <div className={styles.rowInfo}>
                       <span className={styles.rowTitle}>{item.title || item.name}</span>
                       <div className={styles.rowMeta}>
@@ -109,5 +114,6 @@ export default function Charts() {
         )}
       </div>
     </div>
+    </PageTransition>
   )
 }

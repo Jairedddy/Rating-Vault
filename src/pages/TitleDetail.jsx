@@ -4,6 +4,8 @@ import { tmdb, getRatingColor, getRatingLabel, formatRating } from '../services/
 import RatingLineChart from '../components/charts/RatingLineChart'
 import EpisodeHeatmap from '../components/charts/EpisodeHeatmap'
 import SeasonRadar from '../components/charts/SeasonRadar'
+import PageTransition from '../components/transitions/PageTransition'
+import PosterMorph from '../components/transitions/PosterMorph'
 import styles from './TitleDetail.module.css'
 
 export default function TitleDetail() {
@@ -81,149 +83,153 @@ export default function TitleDetail() {
   })).filter(s => s.avg > 0)
 
   return (
-    <div className={styles.page}>
-      {/* Backdrop */}
-      {data.backdrop_path && (
-        <div
-          className={styles.backdrop}
-          style={{ backgroundImage: `url(${tmdb.backdrop(data.backdrop_path)})` }}
-        />
-      )}
-      <div className={styles.backdropGradient} />
+    <PageTransition>
+      <div className={styles.page}>
+        {/* Backdrop */}
+        {data.backdrop_path && (
+          <div
+            className={styles.backdrop}
+            style={{ backgroundImage: `url(${tmdb.backdrop(data.backdrop_path)})` }}
+          />
+        )}
+        <div className={styles.backdropGradient} />
 
-      <div className={styles.content}>
-        {/* Header */}
-        <section className={styles.header}>
-          <div className={styles.posterWrap}>
-            {data.poster_path
-              ? <img src={tmdb.poster(data.poster_path, 'w342')} alt={data.title || data.name} className={styles.poster} />
-              : <div className={styles.posterBlank} />
-            }
-          </div>
-
-          <div className={styles.headerInfo}>
-            <div className={styles.headerMeta}>
-              <span className={styles.pill}>{type === 'movie' ? 'Film' : 'Series'}</span>
-              {year && <span className={styles.metaItem}>{year}</span>}
-              {runtime && <span className={styles.metaItem}>{runtime}</span>}
-              {type === 'tv' && data.number_of_seasons && (
-                <span className={styles.metaItem}>{data.number_of_seasons} seasons</span>
-              )}
+        <div className={styles.content}>
+          {/* Header */}
+          <section className={styles.header}>
+            <div className={styles.posterWrap}>
+              <PosterMorph layoutId={`poster-${type}-${id}`}>
+                {data.poster_path
+                  ? <img src={tmdb.poster(data.poster_path, 'w342')} alt={data.title || data.name} className={styles.poster} />
+                  : <div className={styles.posterBlank} />
+                }
+              </PosterMorph>
             </div>
 
-            <h1 className={styles.title}>{data.title || data.name}</h1>
-
-            {data.tagline && <p className={styles.tagline}>"{data.tagline}"</p>}
-
-            <p className={styles.overview}>{data.overview}</p>
-
-            {/* Genres */}
-            {data.genres?.length > 0 && (
-              <div className={styles.genres}>
-                {data.genres.map(g => (
-                  <span key={g.id} className={styles.genre}>{g.name}</span>
-                ))}
+            <div className={styles.headerInfo}>
+              <div className={styles.headerMeta}>
+                <span className={styles.pill}>{type === 'movie' ? 'Film' : 'Series'}</span>
+                {year && <span className={styles.metaItem}>{year}</span>}
+                {runtime && <span className={styles.metaItem}>{runtime}</span>}
+                {type === 'tv' && data.number_of_seasons && (
+                  <span className={styles.metaItem}>{data.number_of_seasons} seasons</span>
+                )}
               </div>
-            )}
 
-            {/* Rating hero */}
-            <div className={styles.ratingHero}>
-              <div className={styles.ratingMain}>
-                <span className={styles.ratingNum} style={{ color: ratingColor }}>
-                  {formatRating(rating)}
-                </span>
-                <span className={styles.ratingOf}>/10</span>
-              </div>
-              <div className={styles.ratingDetails}>
-                <span className={styles.ratingLabel} style={{ color: ratingColor }}>{ratingLabel}</span>
-                <span className={styles.voteCount}>{data.vote_count?.toLocaleString()} votes</span>
-              </div>
-              {/* Rating bar */}
-              <div className={styles.ratingBarWrap}>
-                <div
-                  className={styles.ratingBar}
-                  style={{
-                    width: `${(rating / 10) * 100}%`,
-                    background: ratingColor
-                  }}
-                />
-              </div>
-            </div>
-          </div>
-        </section>
+              <h1 className={styles.title}>{data.title || data.name}</h1>
 
-        {/* TV Show Charts */}
-        {type === 'tv' && seasons.length > 0 && (
-          <>
-            {/* All episodes line chart */}
-            {allEpisodesChart.length > 0 && (
-              <section className={styles.chartSection}>
-                <h2 className={styles.chartTitle}>Episode Ratings — Full Series Arc</h2>
-                <p className={styles.chartSubtitle}>Every episode across all seasons</p>
-                <div className={styles.chartWrap}>
-                  <RatingLineChart data={allEpisodesChart} />
-                </div>
-              </section>
-            )}
+              {data.tagline && <p className={styles.tagline}>"{data.tagline}"</p>}
 
-            {/* Season averages */}
-            {seasonAverages.length > 1 && (
-              <section className={styles.chartSection}>
-                <h2 className={styles.chartTitle}>Season Averages</h2>
-                <p className={styles.chartSubtitle}>How each season stacks up</p>
-                <div className={styles.chartWrap} style={{ height: 280 }}>
-                  <SeasonRadar data={seasonAverages} />
-                </div>
-              </section>
-            )}
+              <p className={styles.overview}>{data.overview}</p>
 
-            {/* Heatmap per season */}
-            <section className={styles.chartSection}>
-              <div className={styles.chartTitleRow}>
-                <div>
-                  <h2 className={styles.chartTitle}>Episode Heatmap</h2>
-                  <p className={styles.chartSubtitle}>Rating intensity by episode</p>
-                </div>
-                <div className={styles.seasonTabs}>
-                  {seasons.map((_, i) => (
-                    <button
-                      key={i}
-                      className={`${styles.seasonTab} ${selectedSeason === i + 1 ? styles.seasonTabActive : ''}`}
-                      onClick={() => setSelectedSeason(i + 1)}
-                    >
-                      S{i + 1}
-                    </button>
+              {/* Genres */}
+              {data.genres?.length > 0 && (
+                <div className={styles.genres}>
+                  {data.genres.map(g => (
+                    <span key={g.id} className={styles.genre}>{g.name}</span>
                   ))}
                 </div>
+              )}
+
+              {/* Rating hero */}
+              <div className={styles.ratingHero}>
+                <div className={styles.ratingMain}>
+                  <span className={styles.ratingNum} style={{ color: ratingColor }}>
+                    {formatRating(rating)}
+                  </span>
+                  <span className={styles.ratingOf}>/10</span>
+                </div>
+                <div className={styles.ratingDetails}>
+                  <span className={styles.ratingLabel} style={{ color: ratingColor }}>{ratingLabel}</span>
+                  <span className={styles.voteCount}>{data.vote_count?.toLocaleString()} votes</span>
+                </div>
+                {/* Rating bar */}
+                <div className={styles.ratingBarWrap}>
+                  <div
+                    className={styles.ratingBar}
+                    style={{
+                      width: `${(rating / 10) * 100}%`,
+                      background: ratingColor
+                    }}
+                  />
+                </div>
               </div>
-
-              {episodes.length > 0
-                ? <EpisodeHeatmap episodes={episodes} />
-                : <p className={styles.noData}>No rating data for this season yet.</p>
-              }
-            </section>
-          </>
-        )}
-
-        {/* Movie — score breakdown */}
-        {type === 'movie' && (
-          <section className={styles.chartSection}>
-            <h2 className={styles.chartTitle}>Score Overview</h2>
-            <div className={styles.movieStats}>
-              <StatBlock label="TMDB Score" value={formatRating(data.vote_average)} unit="/10" color={ratingColor} />
-              <StatBlock label="Vote Count" value={data.vote_count?.toLocaleString()} unit="votes" />
-              <StatBlock label="Popularity" value={Math.round(data.popularity)} unit="pts" />
-              {data.budget > 0 && (
-                <StatBlock label="Budget" value={`$${(data.budget / 1e6).toFixed(0)}M`} />
-              )}
-              {data.revenue > 0 && (
-                <StatBlock label="Revenue" value={`$${(data.revenue / 1e6).toFixed(0)}M`} />
-              )}
             </div>
           </section>
-        )}
+
+          {/* TV Show Charts */}
+          {type === 'tv' && seasons.length > 0 && (
+            <>
+              {/* All episodes line chart */}
+              {allEpisodesChart.length > 0 && (
+                <section className={styles.chartSection}>
+                  <h2 className={styles.chartTitle}>Episode Ratings — Full Series Arc</h2>
+                  <p className={styles.chartSubtitle}>Every episode across all seasons</p>
+                  <div className={styles.chartWrap}>
+                    <RatingLineChart data={allEpisodesChart} />
+                  </div>
+                </section>
+              )}
+
+              {/* Season averages */}
+              {seasonAverages.length > 1 && (
+                <section className={styles.chartSection}>
+                  <h2 className={styles.chartTitle}>Season Averages</h2>
+                  <p className={styles.chartSubtitle}>How each season stacks up</p>
+                  <div className={styles.chartWrap} style={{ height: 280 }}>
+                    <SeasonRadar data={seasonAverages} />
+                  </div>
+                </section>
+              )}
+
+              {/* Heatmap per season */}
+              <section className={styles.chartSection}>
+                <div className={styles.chartTitleRow}>
+                  <div>
+                    <h2 className={styles.chartTitle}>Episode Heatmap</h2>
+                    <p className={styles.chartSubtitle}>Rating intensity by episode</p>
+                  </div>
+                  <div className={styles.seasonTabs}>
+                    {seasons.map((_, i) => (
+                      <button
+                        key={i}
+                        className={`${styles.seasonTab} ${selectedSeason === i + 1 ? styles.seasonTabActive : ''}`}
+                        onClick={() => setSelectedSeason(i + 1)}
+                      >
+                        S{i + 1}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+
+                {episodes.length > 0
+                  ? <EpisodeHeatmap episodes={episodes} />
+                  : <p className={styles.noData}>No rating data for this season yet.</p>
+                }
+              </section>
+            </>
+          )}
+
+          {/* Movie — score breakdown */}
+          {type === 'movie' && (
+            <section className={styles.chartSection}>
+              <h2 className={styles.chartTitle}>Score Overview</h2>
+              <div className={styles.movieStats}>
+                <StatBlock label="TMDB Score" value={formatRating(data.vote_average)} unit="/10" color={ratingColor} />
+                <StatBlock label="Vote Count" value={data.vote_count?.toLocaleString()} unit="votes" />
+                <StatBlock label="Popularity" value={Math.round(data.popularity)} unit="pts" />
+                {data.budget > 0 && (
+                  <StatBlock label="Budget" value={`$${(data.budget / 1e6).toFixed(0)}M`} />
+                )}
+                {data.revenue > 0 && (
+                  <StatBlock label="Revenue" value={`$${(data.revenue / 1e6).toFixed(0)}M`} />
+                )}
+              </div>
+            </section>
+          )}
+        </div>
       </div>
-    </div>
+    </PageTransition>
   )
 }
 

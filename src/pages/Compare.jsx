@@ -4,6 +4,7 @@ import {
   LineChart, Line, XAxis, YAxis, Tooltip,
   CartesianGrid, ResponsiveContainer, Legend
 } from 'recharts'
+import PageTransition from '../components/transitions/PageTransition'
 import styles from './Compare.module.css'
 
 export default function Compare() {
@@ -95,6 +96,7 @@ export default function Compare() {
   const step = Math.ceil(chartData.length / 20)
 
   return (
+    <PageTransition>
     <div className={styles.page}>
       <div className={styles.inner}>
         <header className={styles.pageHeader}>
@@ -184,6 +186,7 @@ export default function Compare() {
         )}
       </div>
     </div>
+    </PageTransition>
   )
 }
 

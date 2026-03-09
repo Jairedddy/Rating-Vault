@@ -68,7 +68,6 @@ export default function Navbar() {
         >
           <Search size={16} />
           <span>Search titles…</span>
-          <kbd>⌘K</kbd>
         </button>
       </nav>
 
