@@ -2,7 +2,7 @@
 
 ## 🎨 Aesthetic Improvements
 
-### 1. Cinematic Page Transitions (ink-bleed + poster morph + parallax)
+### 1. Cinematic Page Transitions (ink-bleed + poster morph + parallax)  ---> Done
 
 - **Description:** Replace standard route changes with immersive, film-inspired transitions that make navigating the app feel like moving between scenes in a movie.
 - **Instructions:** You are implementing cinematic page transitions for a movie rating application (RatingVault) using React + Vite, React Router, and Framer Motion (already installed). Create `src/components/transitions/InkBleed.jsx` component that renders a full-screen ink-bleed animation on route change — the screen fills with the accent gold (#c8a96e) like ink spreading on paper using CSS clip-path animations, then reveals the next page. Create `src/components/transitions/PosterMorph.jsx` that implements shared layout animations — when clicking a movie card on Home or Charts, the poster smoothly morphs/expands from its grid position into its final position on the TitleDetail page using Framer Motion's `layoutId`. Add parallax depth layers to the hero section on Home.jsx — the backdrop image shifts at a slower speed than the overlay text as the user scrolls, creating a movie-poster depth illusion. Wrap all routes in `App.jsx` with `AnimatePresence` from Framer Motion. Each transition should feel smooth, cinematic, and last no longer than 600ms. Ensure transitions work with React Router v6's route structure.
