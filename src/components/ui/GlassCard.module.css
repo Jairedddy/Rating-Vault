@@ -1,0 +1,63 @@
+.card {
+  position: relative;
+  padding: var(--space-5);
+  border-radius: var(--radius-lg);
+  background: rgba(28, 28, 30, 0.6);
+  border: 1px solid rgba(200, 169, 110, 0.15);
+  backdrop-filter: blur(16px) saturate(180%);
+  -webkit-backdrop-filter: blur(16px) saturate(180%);
+  overflow: hidden;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  will-change: transform;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+/* Holographic overlay — positioned via JS inline style */
+.holoOverlay {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  border-radius: inherit;
+}
+
+.card:hover .holoOverlay {
+  opacity: 1;
+}
+
+/* Pulse variant */
+.pulse {
+  animation: gentlePulse 3s ease-in-out infinite;
+}
+
+@keyframes gentlePulse {
+  0%, 100% { transform: scale(1); }
+  50%      { transform: scale(1.02); }
+}
+
+/* Touch devices: no tilt, keep glass look */
+@media (hover: none) {
+  .card {
+    transform: none !important;
+  }
+}
+
+/* Fallback for no backdrop-filter support */
+@supports not (backdrop-filter: blur(1px)) {
+  .card {
+    background: rgba(28, 28, 30, 0.85);
+  }
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .card {
+    transition: none;
+    transform: none !important;
+  }
+  .pulse { animation: none; }
+  .holoOverlay { display: none; }
+}

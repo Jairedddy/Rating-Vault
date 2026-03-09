@@ -8,6 +8,7 @@ import PageTransition from '../components/transitions/PageTransition'
 import PosterMorph from '../components/transitions/PosterMorph'
 import RatingPulse from '../components/ui/RatingPulse'
 import { GradientText, TypewriterText } from '../components/ui/AnimatedText'
+import GlassCard from '../components/ui/GlassCard'
 import styles from './TitleDetail.module.css'
 
 export default function TitleDetail() {
@@ -221,7 +222,7 @@ export default function TitleDetail() {
             <section className={styles.chartSection}>
               <h2 className={styles.chartTitle}>Score Overview</h2>
               <div className={styles.movieStats}>
-                <StatBlock label="TMDB Score" value={formatRating(data.vote_average)} unit="/10" color={ratingColor} />
+                <StatBlock label="TMDB Score" value={formatRating(data.vote_average)} unit="/10" color={ratingColor} pulse />
                 <StatBlock label="Vote Count" value={data.vote_count?.toLocaleString()} unit="votes" />
                 <StatBlock label="Popularity" value={Math.round(data.popularity)} unit="pts" />
                 {data.budget > 0 && (
@@ -239,15 +240,15 @@ export default function TitleDetail() {
   )
 }
 
-function StatBlock({ label, value, unit, color }) {
+function StatBlock({ label, value, unit, color, pulse }) {
   return (
-    <div className={styles.statBlock}>
+    <GlassCard pulse={pulse}>
       <span className={styles.statLabel}>{label}</span>
       <span className={styles.statValue} style={color ? { color } : {}}>
         {value}
         {unit && <span className={styles.statUnit}> {unit}</span>}
       </span>
-    </div>
+    </GlassCard>
   )
 }
 
