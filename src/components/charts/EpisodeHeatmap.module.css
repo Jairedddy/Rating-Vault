@@ -1,0 +1,122 @@
+.wrap {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-6);
+}
+
+.grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+}
+
+.cell {
+  width: 72px;
+  height: 72px;
+  border-radius: var(--radius-md);
+  background: color-mix(in srgb, var(--cell-color) calc(var(--cell-opacity) * 100%), var(--bg-elevated) calc((1 - var(--cell-opacity)) * 100%));
+  border: 1px solid rgba(255,255,255,0.06);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  cursor: default;
+  transition: transform var(--duration-fast), border-color var(--duration-fast),
+              box-shadow var(--duration-fast);
+}
+
+.cell:hover, .cellHovered {
+  transform: scale(1.08);
+  border-color: var(--cell-color) !important;
+  box-shadow: 0 0 16px rgba(var(--cell-color), 0.2);
+  z-index: 1;
+}
+
+.cellEp {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  letter-spacing: 0.08em;
+  color: var(--text-muted);
+  text-transform: uppercase;
+}
+
+.cellRating {
+  font-family: var(--font-display);
+  font-size: 20px;
+  font-weight: 300;
+  color: var(--cell-color);
+  line-height: 1;
+}
+
+/* Tooltip */
+.tooltip {
+  padding: var(--space-5);
+  background: var(--bg-elevated);
+  border: 1px solid var(--border-mid);
+  border-radius: var(--radius-lg);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  max-width: 400px;
+}
+
+.tooltipEp {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+.tooltipName {
+  font-family: var(--font-display);
+  font-size: 18px;
+  font-weight: 400;
+  color: var(--text-primary);
+}
+
+.tooltipRating {
+  display: flex;
+  align-items: baseline;
+  gap: var(--space-3);
+}
+
+.tooltipOverview {
+  font-size: 12px;
+  line-height: 1.6;
+  color: var(--text-secondary);
+  border-top: 1px solid var(--border-subtle);
+  padding-top: var(--space-3);
+  margin-top: var(--space-1);
+}
+
+.tooltipDate {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--text-muted);
+}
+
+/* Legend */
+.legend {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+.legendLabel {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--text-muted);
+  letter-spacing: 0.06em;
+  white-space: nowrap;
+}
+
+.legendBar {
+  display: flex;
+  height: 6px;
+  border-radius: 3px;
+  overflow: hidden;
+  width: 140px;
+  flex-shrink: 0;
+}
