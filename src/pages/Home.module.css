@@ -1,5 +1,6 @@
 .page {
   min-height: 100vh;
+  scroll-snap-type: y proximity;
 }
 
 /* ── Hero ─────────────────────────────────────────────── */
@@ -10,6 +11,7 @@
   display: flex;
   align-items: flex-end;
   padding: 0 var(--space-20) var(--space-20);
+  scroll-snap-align: start;
 }
 
 .heroBackdrop {
@@ -133,6 +135,7 @@
 /* ── Section ──────────────────────────────────────────── */
 .section {
   padding: var(--space-16) var(--space-20);
+  scroll-snap-align: start;
 }
 
 .sectionHeader {

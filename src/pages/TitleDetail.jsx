@@ -24,7 +24,7 @@ export default function TitleDetail() {
     setData(null)
     setSeasons([])
 
-    const fetchData = async (retry = 1) => {
+    const fetchData = async () => {
       try {
         if (type === 'movie') {
           const movie = await tmdb.movie(id)
@@ -40,9 +40,6 @@ export default function TitleDetail() {
           }
         }
       } catch (e) {
-        if (retry > 0) {
-          return fetchData(retry - 1)
-        }
         setError(e.message)
       } finally {
         setLoading(false)

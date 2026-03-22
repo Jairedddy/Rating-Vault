@@ -21,12 +21,12 @@
   align-items: center;
   justify-content: center;
   gap: 2px;
-  cursor: default;
+  cursor: url('/cursors/pointer.svg') 7 1, pointer;
   transition: transform var(--duration-fast), border-color var(--duration-fast),
               box-shadow var(--duration-fast);
 }
 
-.cell:hover, .cellHovered {
+.cellActive {
   transform: scale(1.08);
   border-color: var(--cell-color) !important;
   box-shadow: 0 0 16px rgba(var(--cell-color), 0.2);

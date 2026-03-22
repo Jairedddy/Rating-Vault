@@ -6,13 +6,20 @@ const BASE_URL = 'https://api.themoviedb.org/3'
 const IMAGE_BASE = 'https://image.tmdb.org/t/p'
 const API_KEY = import.meta.env.VITE_TMDB_API_KEY
 
-const get = async (endpoint, params = {}) => {
+const get = async (endpoint, params = {}, retries = 2) => {
   const url = new URL(`${BASE_URL}${endpoint}`)
   url.searchParams.set('api_key', API_KEY)
   Object.entries(params).forEach(([k, v]) => url.searchParams.set(k, v))
-  const res = await fetch(url.toString())
-  if (!res.ok) throw new Error(`TMDB error: ${res.status}`)
-  return res.json()
+  for (let attempt = 0; attempt <= retries; attempt++) {
+    try {
+      const res = await fetch(url.toString())
+      if (!res.ok) throw new Error(`TMDB error: ${res.status}`)
+      return await res.json()
+    } catch (e) {
+      if (attempt === retries) throw e
+      await new Promise(r => setTimeout(r, 500 * (attempt + 1)))
+    }
+  }
 }
 
 export const tmdb = {
@@ -50,11 +57,19 @@ export const tmdb = {
     get(`/tv/${id}/season/${seasonNumber}`),
 
   tvSeasonRatings: async (showId, totalSeasons) => {
-    const seasons = await Promise.all(
-      Array.from({ length: totalSeasons }, (_, i) =>
-        get(`/tv/${showId}/season/${i + 1}`)
+    // Fetch in batches of 3 to avoid overwhelming the API
+    const batchSize = 3
+    const seasons = []
+    for (let i = 0; i < totalSeasons; i += batchSize) {
+      const batch = Array.from(
+        { length: Math.min(batchSize, totalSeasons - i) },
+        (_, j) => get(`/tv/${showId}/season/${i + j + 1}`).catch(() => ({ episodes: [] }))
       )
-    )
+      seasons.push(...await Promise.all(batch))
+      if (i + batchSize < totalSeasons) {
+        await new Promise(r => setTimeout(r, 300))
+      }
+    }
     return seasons
   },
 

@@ -93,11 +93,28 @@ body::before {
   z-index: 9999;
 }
 
-/* Scrollbar */
-::-webkit-scrollbar { width: 6px; }
-::-webkit-scrollbar-track { background: var(--bg-base); }
-::-webkit-scrollbar-thumb { background: var(--bg-overlay); border-radius: 3px; }
-::-webkit-scrollbar-thumb:hover { background: var(--border-strong); }
+/* Hide native scrollbar — replaced by horizontal film-strip progress bar */
+::-webkit-scrollbar { display: none; }
+* {
+  scrollbar-width: none;
+}
+
+/* Custom cursors — black fill, gold outline */
+html, body {
+  cursor: url('/cursors/default.svg') 3 2, default;
+}
+
+a, button, [role="button"], label, select, summary,
+input[type="submit"], input[type="button"], input[type="reset"],
+[onclick], .card, [class*="Btn"], [class*="btn"], [class*="Tab"], [class*="tab"], [class*="link"], [class*="Link"] {
+  cursor: url('/cursors/pointer.svg') 7 1, pointer;
+}
+
+input[type="text"], input[type="email"], input[type="password"],
+input[type="search"], input[type="url"], input[type="tel"],
+input[type="number"], textarea, [contenteditable="true"] {
+  cursor: url('/cursors/text.svg') 8 12, text;
+}
 
 /* Selection */
 ::selection {
