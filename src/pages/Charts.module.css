@@ -47,7 +47,7 @@
   font-family: var(--font-body);
   font-size: 13px;
   font-weight: 400;
-  cursor: pointer;
+  cursor: url('/cursors/pointer.svg') 12 12, pointer;
   white-space: nowrap;
   transition: color var(--duration-base), border-color var(--duration-base);
   margin-bottom: -1px;

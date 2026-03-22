@@ -230,7 +230,7 @@
   color: var(--text-muted);
   font-family: var(--font-mono);
   font-size: 11px;
-  cursor: pointer;
+  cursor: url('/cursors/pointer.svg') 12 12, pointer;
   transition: border-color var(--duration-fast), color var(--duration-fast),
               background var(--duration-fast);
 }

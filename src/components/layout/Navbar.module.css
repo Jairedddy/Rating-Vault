@@ -87,7 +87,7 @@
   color: var(--text-muted);
   font-family: var(--font-body);
   font-size: 13px;
-  cursor: pointer;
+  cursor: url('/cursors/pointer.svg') 12 12, pointer;
   transition: border-color var(--duration-base), color var(--duration-base),
               background var(--duration-base);
   white-space: nowrap;
@@ -185,7 +185,7 @@
   border: 1px solid var(--border-subtle);
   border-radius: var(--radius-sm);
   color: var(--text-muted);
-  cursor: pointer;
+  cursor: url('/cursors/pointer.svg') 12 12, pointer;
   transition: color var(--duration-fast);
 }
 .closeBtn:hover { color: var(--text-primary); }

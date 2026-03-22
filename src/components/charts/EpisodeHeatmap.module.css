@@ -21,7 +21,7 @@
   align-items: center;
   justify-content: center;
   gap: 2px;
-  cursor: url('/cursors/pointer.svg') 7 1, pointer;
+  cursor: url('/cursors/pointer.svg') 12 12, pointer;
   transition: transform var(--duration-fast), border-color var(--duration-fast),
               box-shadow var(--duration-fast);
 }

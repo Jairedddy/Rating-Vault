@@ -107,7 +107,7 @@ html, body {
 a, button, [role="button"], label, select, summary,
 input[type="submit"], input[type="button"], input[type="reset"],
 [onclick], .card, [class*="Btn"], [class*="btn"], [class*="Tab"], [class*="tab"], [class*="link"], [class*="Link"] {
-  cursor: url('/cursors/pointer.svg') 7 1, pointer;
+  cursor: url('/cursors/pointer.svg') 12 12, pointer;
 }
 
 input[type="text"], input[type="email"], input[type="password"],

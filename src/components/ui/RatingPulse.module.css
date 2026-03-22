@@ -5,7 +5,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  cursor: pointer;
+  cursor: url('/cursors/pointer.svg') 12 12, pointer;
 }
 
 /* SVG fills the container */

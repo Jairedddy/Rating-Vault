@@ -104,7 +104,7 @@
   width: 100%;
   background: none;
   border: none;
-  cursor: pointer;
+  cursor: url('/cursors/pointer.svg') 12 12, pointer;
   text-align: left;
   border-bottom: 1px solid var(--border-subtle);
   transition: background var(--duration-fast);

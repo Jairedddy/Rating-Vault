@@ -20,24 +20,28 @@ export default function Compare() {
   const [rightSeasons, setRightSeasons] = useState([])
   const [loading, setLoading] = useState({ left: false, right: false })
 
-  // Search debounce
+  // Search debounce — skip if query matches current pick
   useEffect(() => {
     if (!leftQuery.trim()) { setLeftResults([]); return }
+    const pickName = leftPick?.title || leftPick?.name
+    if (pickName && leftQuery === pickName) return
     const t = setTimeout(async () => {
       const d = await tmdb.search(leftQuery)
       setLeftResults((d.results || []).filter(r => r.media_type !== 'person').slice(0, 5))
     }, 350)
     return () => clearTimeout(t)
-  }, [leftQuery])
+  }, [leftQuery, leftPick])
 
   useEffect(() => {
     if (!rightQuery.trim()) { setRightResults([]); return }
+    const pickName = rightPick?.title || rightPick?.name
+    if (pickName && rightQuery === pickName) return
     const t = setTimeout(async () => {
       const d = await tmdb.search(rightQuery)
       setRightResults((d.results || []).filter(r => r.media_type !== 'person').slice(0, 5))
     }, 350)
     return () => clearTimeout(t)
-  }, [rightQuery])
+  }, [rightQuery, rightPick])
 
   // Fetch full data when picked (auto-retry once on failure)
   const fetchFull = async (pick, side, retry = 1) => {
