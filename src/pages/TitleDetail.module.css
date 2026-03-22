@@ -246,6 +246,29 @@
   background: var(--accent-dim) !important;
 }
 
+/* Story Mode button */
+.storyBtn {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-2) var(--space-4);
+  background: var(--bg-elevated);
+  border: 1px solid var(--accent);
+  border-radius: var(--radius-sm);
+  color: var(--accent);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.06em;
+  cursor: url('/cursors/pointer.svg') 12 12, pointer;
+  transition: background var(--duration-fast), box-shadow var(--duration-fast);
+  white-space: nowrap;
+}
+
+.storyBtn:hover {
+  background: var(--accent-dim);
+  box-shadow: 0 0 16px var(--accent-glow);
+}
+
 .noData {
   color: var(--text-muted);
   font-size: 13px;

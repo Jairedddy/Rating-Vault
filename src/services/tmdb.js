@@ -27,6 +27,7 @@ export const tmdb = {
   image: (path, size = 'w500') => path ? `${IMAGE_BASE}/${size}${path}` : null,
   backdrop: (path) => path ? `${IMAGE_BASE}/w1280${path}` : null,
   poster: (path, size = 'w342') => path ? `${IMAGE_BASE}/${size}${path}` : null,
+  profilePhoto: (path, size = 'w185') => path ? `${IMAGE_BASE}/${size}${path}` : null,
 
   // Search
   search: (query, page = 1) =>

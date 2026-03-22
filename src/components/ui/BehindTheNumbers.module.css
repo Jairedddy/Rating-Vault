@@ -1,0 +1,230 @@
+.section {
+  margin-bottom: var(--space-12);
+  padding: var(--space-6);
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-xl);
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.title {
+  font-family: var(--font-display);
+  font-size: 20px;
+  font-weight: 400;
+}
+
+.toggleBtn {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  background: none;
+  border: 1px solid var(--border-mid);
+  border-radius: var(--radius-sm);
+  color: var(--accent);
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: var(--space-2) var(--space-3);
+  cursor: url('/cursors/pointer.svg') 12 12, pointer;
+  transition: border-color var(--duration-fast), background var(--duration-fast);
+}
+
+.toggleBtn:hover {
+  border-color: var(--accent);
+  background: var(--accent-dim);
+}
+
+.chevron {
+  display: inline-block;
+  transition: transform 0.3s var(--ease-out);
+  font-size: 12px;
+}
+
+.chevronOpen {
+  transform: rotate(180deg);
+}
+
+.panel {
+  overflow: hidden;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: var(--space-6);
+  padding-top: var(--space-6);
+}
+
+/* Infographic blocks */
+.block {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.blockLabel {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+.blockValue {
+  font-family: var(--font-display);
+  font-size: 28px;
+  font-weight: 300;
+  color: var(--text-primary);
+  line-height: 1;
+}
+
+.blockValueAccent {
+  color: var(--accent);
+}
+
+/* Vote bar */
+.barTrack {
+  height: 6px;
+  background: var(--bg-overlay);
+  border-radius: 3px;
+  overflow: hidden;
+  margin-top: var(--space-2);
+}
+
+.barFill {
+  height: 100%;
+  background: var(--accent);
+  border-radius: 3px;
+  transition: width 1.2s var(--ease-out);
+  box-shadow: 0 0 12px var(--accent-glow);
+}
+
+/* Genre ruler */
+.ruler {
+  position: relative;
+  height: 2px;
+  background: var(--border-mid);
+  margin: var(--space-5) 0 var(--space-3);
+  border-radius: 1px;
+}
+
+.rulerLabels {
+  display: flex;
+  justify-content: space-between;
+  font-family: var(--font-mono);
+  font-size: 9px;
+  color: var(--text-muted);
+}
+
+.rulerDot {
+  position: absolute;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  transition: left 1s var(--ease-out);
+}
+
+.rulerDotMain {
+  background: var(--accent);
+  box-shadow: 0 0 10px var(--accent-glow);
+  z-index: 1;
+}
+
+.rulerDotBaseline {
+  background: var(--text-muted);
+  opacity: 0.4;
+  width: 8px;
+  height: 8px;
+}
+
+.rulerLegend {
+  display: flex;
+  gap: var(--space-4);
+  margin-top: var(--space-2);
+  font-family: var(--font-mono);
+  font-size: 9px;
+  color: var(--text-muted);
+}
+
+.legendDot {
+  display: inline-block;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  margin-right: var(--space-1);
+  vertical-align: middle;
+}
+
+/* Popularity donut */
+.donutWrap {
+  display: flex;
+  align-items: center;
+  gap: var(--space-5);
+}
+
+.donut {
+  width: 80px;
+  height: 80px;
+  flex-shrink: 0;
+}
+
+.donutTrack {
+  fill: none;
+  stroke: var(--bg-overlay);
+  stroke-width: 5;
+}
+
+.donutFill {
+  fill: none;
+  stroke: var(--accent);
+  stroke-width: 5;
+  stroke-linecap: round;
+  transition: stroke-dashoffset 1.5s var(--ease-out);
+}
+
+.donutLabel {
+  font-family: var(--font-display);
+  font-size: 18px;
+  font-weight: 300;
+  fill: var(--accent);
+}
+
+.donutMeta {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.donutMetaValue {
+  font-family: var(--font-display);
+  font-size: 22px;
+  font-weight: 300;
+  color: var(--text-primary);
+}
+
+.donutMetaLabel {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .barFill,
+  .rulerDot,
+  .donutFill {
+    transition: none;
+  }
+  .chevron {
+    transition: none;
+  }
+}

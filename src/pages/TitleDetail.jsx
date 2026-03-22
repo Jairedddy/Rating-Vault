@@ -1,5 +1,7 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useCallback } from 'react'
 import { useParams, Link } from 'react-router-dom'
+import { AnimatePresence, useReducedMotion } from 'framer-motion'
+import { BookOpen } from 'lucide-react'
 import { tmdb, getRatingColor, getRatingLabel, formatRating } from '../services/tmdb'
 import RatingLineChart from '../components/charts/RatingLineChart'
 import EpisodeHeatmap from '../components/charts/EpisodeHeatmap'
@@ -9,6 +11,9 @@ import PosterMorph from '../components/transitions/PosterMorph'
 import RatingPulse from '../components/ui/RatingPulse'
 import { GradientText, TypewriterText } from '../components/ui/AnimatedText'
 import GlassCard from '../components/ui/GlassCard'
+import CastCarousel from '../components/ui/CastCarousel'
+import BehindTheNumbers from '../components/ui/BehindTheNumbers'
+import RatingStory from '../components/storytelling/RatingStory'
 import styles from './TitleDetail.module.css'
 
 export default function TitleDetail() {
@@ -18,6 +23,9 @@ export default function TitleDetail() {
   const [selectedSeason, setSelectedSeason] = useState(1)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
+  const [storyOpen, setStoryOpen] = useState(false)
+  const reduced = useReducedMotion()
+  const closeStory = useCallback(() => setStoryOpen(false), [])
 
   useEffect(() => {
     setLoading(true)
@@ -161,14 +169,34 @@ export default function TitleDetail() {
             </div>
           </section>
 
+          {/* Cast Carousel */}
+          {data.credits?.cast?.length > 0 && (
+            <CastCarousel cast={data.credits.cast} />
+          )}
+
+          {/* Behind the Numbers */}
+          <BehindTheNumbers
+            voteCount={data.vote_count}
+            voteAverage={data.vote_average}
+            popularity={data.popularity}
+          />
+
           {/* TV Show Charts */}
           {type === 'tv' && seasons.length > 0 && (
             <>
               {/* All episodes line chart */}
               {allEpisodesChart.length > 0 && (
                 <section className={styles.chartSection}>
-                  <h2 className={styles.chartTitle}>Episode Ratings — Full Series Arc</h2>
-                  <p className={styles.chartSubtitle}>Every episode across all seasons</p>
+                  <div className={styles.chartTitleRow}>
+                    <div>
+                      <h2 className={styles.chartTitle}>Episode Ratings — Full Series Arc</h2>
+                      <p className={styles.chartSubtitle}>Every episode across all seasons</p>
+                    </div>
+                    <button className={styles.storyBtn} onClick={() => setStoryOpen(true)}>
+                      <BookOpen size={14} />
+                      <span>Story Mode</span>
+                    </button>
+                  </div>
                   <div className={styles.chartWrap}>
                     <RatingLineChart data={allEpisodesChart} />
                   </div>
@@ -233,6 +261,17 @@ export default function TitleDetail() {
           )}
         </div>
       </div>
+
+      {/* Story Mode overlay */}
+      <AnimatePresence>
+        {storyOpen && type === 'tv' && seasons.length > 0 && (
+          <RatingStory
+            seasons={seasons}
+            showName={data.title || data.name}
+            onClose={closeStory}
+          />
+        )}
+      </AnimatePresence>
     </PageTransition>
   )
 }

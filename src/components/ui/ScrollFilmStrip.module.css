@@ -22,3 +22,8 @@
 .bar.visible {
   opacity: 1;
 }
+
+:global([data-story-open="true"]) .bar {
+  opacity: 0 !important;
+  pointer-events: none;
+}
