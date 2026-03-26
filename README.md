@@ -1,99 +1,147 @@
 # RatingVault
 
-A cinematic rating visualizer for movies and TV shows. Built on TMDB's free API.
+> A cinematic rating explorer for movies and TV shows, powered by TMDB's free API.
+> • Stunning episode arc visualizations with multi-season breakdowns.
+> • Colour-coded heatmaps that reveal quality patterns at a glance.
+> • Head-to-head comparison mode with dual-line chart overlays.
+> • Curated top-rated and trending lists across five discovery tabs.
+> • Glassmorphism UI with ink-bleed transitions and animated typography.
+> • Zero cost — no backend, no paid APIs, no credit card required.
 
-## Stack
-- **Vite** + **React 18**
-- **React Router v6** — client-side routing
-- **Recharts** — all charts
-- **Framer Motion** — page transitions (optional, installed)
-- **Lucide React** — icons
-- **CSS Modules** — scoped styling, no Tailwind
-- **TMDB API** — free, no credit card required
+![React](https://img.shields.io/badge/React-18-61DAFB?logo=react&logoColor=white)
+![Vite](https://img.shields.io/badge/Vite-5-646CFF?logo=vite&logoColor=white)
+![License](https://img.shields.io/badge/license-MIT-green)
 
 ---
 
-## Setup
+## Tech Stack
 
-### 1. Get a free TMDB API key
-1. Create an account at [themoviedb.org](https://www.themoviedb.org)
-2. Go to Settings → API → Request an API key (choose "Developer")
-3. Fill in the form — it's free and instant
+| Layer      | Library              |
+|------------|----------------------|
+| Framework  | React 18 + Vite 5    |
+| Routing    | React Router v6      |
+| Charts     | Recharts             |
+| Animation  | Framer Motion        |
+| Icons      | Lucide React         |
+| Styling    | CSS Modules          |
+| Data       | TMDB API             |
 
-### 2. Install & configure
+---
+
+## Getting Started
+
+### Prerequisites
+
+- Node.js 18+
+- A free [TMDB API key](https://www.themoviedb.org/settings/api) — no credit card required
+
+### Installation
+
 ```bash
-cd ratingvault
+git clone https://github.com/your-username/rating-vault.git
+cd rating-vault
 npm install
-
-# Create your .env file
-cp .env.example .env
-# Then open .env and add your TMDB key:
-# VITE_TMDB_API_KEY=your_key_here
 ```
 
-### 3. Run
+### Environment
+
+```bash
+cp .env.example .env
+```
+
+Open `.env` and fill in your key:
+
+```env
+VITE_TMDB_API_KEY=your_tmdb_api_key_here
+```
+
+### Development
+
 ```bash
 npm run dev
 # → http://localhost:5173
 ```
 
-### 4. Build for production
+### Production Build
+
 ```bash
 npm run build
-# Output in /dist — deploy to Vercel, Netlify, Cloudflare Pages (all free)
+# Output in /dist
 ```
 
 ---
 
-## Pages
+## Routes
 
 | Route | Description |
 |-------|-------------|
-| `/` | Hero + trending grid |
-| `/title/:type/:id` | Full ratings analysis (line chart, heatmap, season bars) |
-| `/charts` | Top rated / trending lists with 5 tabs |
+| `/` | Hero landing page with trending grid |
+| `/title/:type/:id` | Full ratings analysis — line chart, heatmap, season bars |
+| `/charts` | Top rated / trending lists across 5 tabs |
 | `/compare` | Side-by-side comparison with dual-line chart |
-
-## Folder structure
-
-```
-src/
-  components/
-    charts/
-      RatingLineChart.jsx   # Episode arc line chart
-      EpisodeHeatmap.jsx    # Per-episode colour grid
-      SeasonRadar.jsx       # Season averages bar chart
-    layout/
-      Navbar.jsx            # Fixed nav + search overlay
-      Navbar.module.css
-  pages/
-    Home.jsx / .module.css
-    TitleDetail.jsx / .module.css
-    Charts.jsx / .module.css
-    Compare.jsx / .module.css
-  services/
-    tmdb.js                 # All API calls + helpers
-  hooks/
-    useFetch.js             # Generic fetch + search hooks
-  App.jsx
-  index.css                 # Global tokens + resets
-  main.jsx
-```
-
-## Deployment (free)
-
-**Vercel (recommended):**
-1. Push to GitHub
-2. Import repo on vercel.com
-3. Add `VITE_TMDB_API_KEY` as an environment variable
-4. Deploy
-
-**Netlify:**
-Same flow — add env var in Site Settings → Environment Variables.
 
 ---
 
-## Design tokens
+## Project Structure
 
-All colors, spacing, and fonts are defined as CSS variables in `src/index.css`.
-Swap the accent, fonts, or palette there to retheme the whole app instantly.
+```
+src/
+├── components/
+│   ├── ambient/
+│   │   └── ParticleField.jsx       # Animated backdrop
+│   ├── charts/
+│   │   ├── RatingLineChart.jsx     # Episode arc line chart
+│   │   ├── EpisodeHeatmap.jsx      # Per-episode colour grid
+│   │   └── SeasonRadar.jsx         # Season averages bar chart
+│   ├── layout/
+│   │   └── Navbar.jsx              # Fixed nav + search overlay
+│   ├── transitions/
+│   │   ├── AnimatedRoutes.jsx
+│   │   ├── InkBleed.jsx            # Page transition effect
+│   │   └── PageTransition.jsx
+│   └── ui/
+│       ├── AnimatedText.jsx        # Cinematic text effects
+│       ├── GlassCard.jsx           # Glassmorphism card
+│       └── RatingPulse.jsx         # Pulsing score badge
+├── hooks/
+│   └── useFetch.js                 # Generic fetch + search hooks
+├── pages/
+│   ├── Home.jsx
+│   ├── TitleDetail.jsx
+│   ├── Charts.jsx
+│   └── Compare.jsx
+├── services/
+│   └── tmdb.js                     # All TMDB API calls
+├── App.jsx
+├── index.css                       # Global design tokens + resets
+└── main.jsx
+```
+
+---
+
+## Deployment
+
+RatingVault is a fully static site — deploy it anywhere for free.
+
+**Vercel (recommended)**
+
+1. Push to GitHub
+2. Import the repo at [vercel.com](https://vercel.com)
+3. Add `VITE_TMDB_API_KEY` under Project → Settings → Environment Variables
+4. Deploy
+
+**Netlify / Cloudflare Pages**
+
+Same flow — add the env var under the project's environment settings, then trigger a deploy.
+
+---
+
+## Customization
+
+All design tokens — colors, spacing, typography, and the accent palette — live as CSS custom properties in [src/index.css](src/index.css). Changing the accent color or font there rethemes the entire app instantly.
+
+---
+
+## License
+
+MIT
