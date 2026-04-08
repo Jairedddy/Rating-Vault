@@ -92,6 +92,16 @@ export const tmdb = {
 
   nowPlaying: () => get('/movie/now_playing'),
   onAir: () => get('/tv/on_the_air'),
+
+  // World Cinema
+  discoverByRegion: (countryCode, page = 1) =>
+    get('/discover/movie', {
+      with_origin_country: countryCode,
+      sort_by: 'vote_average.desc',
+      'vote_count.gte': 50,
+      include_adult: false,
+      page,
+    }),
 }
 
 // Helpers

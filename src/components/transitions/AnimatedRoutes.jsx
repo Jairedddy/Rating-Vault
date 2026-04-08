@@ -5,6 +5,7 @@ import TitleDetail from '../../pages/TitleDetail'
 import Charts from '../../pages/Charts'
 import Compare from '../../pages/Compare'
 import Arena from '../../pages/Arena'
+import WorldMap from '../../pages/WorldMap'
 import InkBleed from './InkBleed'
 
 export default function AnimatedRoutes() {
@@ -20,6 +21,7 @@ export default function AnimatedRoutes() {
           <Route path="/charts" element={<Charts />} />
           <Route path="/compare" element={<Compare />} />
           <Route path="/arena" element={<Arena />} />
+          <Route path="/world" element={<WorldMap />} />
         </Routes>
       </AnimatePresence>
     </>

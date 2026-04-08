@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
-import { Search, X, Film, Tv, BarChart2, GitCompare, Swords } from 'lucide-react'
+import { Search, X, Film, Tv, BarChart2, GitCompare, Swords, Globe2 } from 'lucide-react'
 import { tmdb } from '../../services/tmdb'
 import { VaultLogo } from '../ui/AnimatedText'
 import styles from './Navbar.module.css'
@@ -63,6 +63,10 @@ export default function Navbar() {
           <Link to="/arena" className={`${styles.link} ${isActive('/arena') ? styles.active : ''}`}>
             <Swords size={14} />
             Arena
+          </Link>
+          <Link to="/world" className={`${styles.link} ${isActive('/world') ? styles.active : ''}`}>
+            <Globe2 size={14} />
+            World
           </Link>
         </div>
 
