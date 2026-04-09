@@ -1,6 +1,7 @@
 import { useRef, useEffect, useState, useCallback } from 'react'
+import { useNavigate } from 'react-router-dom'
 import Globe from 'globe.gl'
-import { Search, X, Film, Star, Globe2 } from 'lucide-react'
+import { X, Film, Star, Globe2 } from 'lucide-react'
 import { AnimatePresence, motion } from 'framer-motion'
 import { tmdb } from '../services/tmdb'
 import styles from './WorldMap.module.css'
@@ -110,6 +111,7 @@ export default function WorldMap() {
   const containerRef    = useRef()
   const globeRef        = useRef()
   const clickHandlerRef = useRef()   // always-current click handler (avoids stale closure)
+  const navigate        = useNavigate()
 
   const [geoData,      setGeoData]      = useState(null)
   const [geoError,     setGeoError]     = useState(false)
@@ -117,8 +119,6 @@ export default function WorldMap() {
   const [selected,     setSelected]     = useState(null)
   const [panelTitles,  setPanelTitles]  = useState([])
   const [panelLoading, setPanelLoading] = useState(false)
-  const [search,       setSearch]       = useState('')
-  const [suggestions,  setSuggestions]  = useState([])
 
   // ── WebGL check ─────────────────────────────────────────────────
   useEffect(() => {
@@ -242,23 +242,6 @@ export default function WorldMap() {
       .polygonLabel(makeLabel)
   }, [geoData])
 
-  // ── Search suggestions ───────────────────────────────────────────
-  useEffect(() => {
-    if (!search.trim()) { setSuggestions([]); return }
-    const q = search.toLowerCase()
-    setSuggestions(
-      Object.entries(CINEMA_NATIONS)
-        .filter(([iso, n]) => n.name.toLowerCase().includes(q) || iso.toLowerCase().includes(q))
-        .slice(0, 6)
-    )
-  }, [search])
-
-  const jumpTo = useCallback(([iso, nation]) => {
-    setSearch('')
-    setSuggestions([])
-    openCountry(iso, nation)
-  }, [openCountry])
-
   // ── WebGL fallback ───────────────────────────────────────────────
   if (!webglOk) {
     return (
@@ -272,44 +255,6 @@ export default function WorldMap() {
 
   return (
     <div className={styles.page}>
-
-      {/* ── Search bar ───────────────────────────────────────────── */}
-      <div className={styles.searchWrap}>
-        <div className={styles.searchBar}>
-          <Search size={15} className={styles.searchIcon} />
-          <input
-            className={styles.searchInput}
-            placeholder="Jump to a country…"
-            value={search}
-            onChange={e => setSearch(e.target.value)}
-            onKeyDown={e => { if (e.key === 'Escape') { setSearch(''); setSuggestions([]) } }}
-          />
-          {search && (
-            <button className={styles.searchClear} onClick={() => { setSearch(''); setSuggestions([]) }}>
-              <X size={13} />
-            </button>
-          )}
-        </div>
-
-        <AnimatePresence>
-          {suggestions.length > 0 && (
-            <motion.ul
-              className={styles.suggestions}
-              initial={{ opacity: 0, y: -6 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -6 }}
-              transition={{ duration: 0.15 }}
-            >
-              {suggestions.map(entry => (
-                <li key={entry[0]} className={styles.suggestion} onClick={() => jumpTo(entry)}>
-                  <span className={styles.suggestIso}>{entry[0]}</span>
-                  {entry[1].name}
-                </li>
-              ))}
-            </motion.ul>
-          )}
-        </AnimatePresence>
-      </div>
 
       {/* ── Globe container ───────────────────────────────────────── */}
       <div className={styles.globeContainer}>
@@ -391,7 +336,14 @@ export default function WorldMap() {
             ) : (
               <ul className={styles.titleList}>
                 {panelTitles.map((t, i) => (
-                  <li key={t.id} className={styles.titleItem}>
+                  <li
+                    key={t.id}
+                    className={styles.titleItem}
+                    onClick={() => navigate(`/title/movie/${t.id}`)}
+                    role="button"
+                    tabIndex={0}
+                    onKeyDown={e => e.key === 'Enter' && navigate(`/title/movie/${t.id}`)}
+                  >
                     <span className={styles.rank}>{i + 1}</span>
                     {t.poster_path
                       ? <img src={tmdb.poster(t.poster_path, 'w92')} alt="" className={styles.poster} loading="lazy" />
