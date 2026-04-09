@@ -5,6 +5,8 @@ import {
   CartesianGrid, ResponsiveContainer, Legend
 } from 'recharts'
 import PageTransition from '../components/transitions/PageTransition'
+import SmartImage from '../components/ui/SmartImage'
+import SEO from '../components/SEO'
 import styles from './Compare.module.css'
 
 export default function Compare() {
@@ -103,6 +105,7 @@ export default function Compare() {
 
   return (
     <PageTransition>
+    <SEO title="Compare" description="Head-to-head rating comparison of movies and TV shows." url="/compare" />
     <div className={styles.page}>
       <div className={styles.inner}>
         <header className={styles.pageHeader}>
@@ -214,7 +217,7 @@ function SearchPanel({ label, query, setQuery, results, onPick, loading: isLoadi
               <li key={r.id}>
                 <button className={styles.dropdownItem} onClick={() => onPick(r)}>
                   {r.poster_path && (
-                    <img src={tmdb.poster(r.poster_path, 'w92')} alt="" className={styles.dropThumb} />
+                    <SmartImage path={r.poster_path} alt="" className={styles.dropThumb} />
                   )}
                   <span>
                     <span className={styles.dropTitle}>{r.title || r.name}</span>
@@ -233,7 +236,7 @@ function SearchPanel({ label, query, setQuery, results, onPick, loading: isLoadi
       {data && !isLoading && (
         <div className={styles.selectedCard}>
           {data.poster_path && (
-            <img src={tmdb.poster(data.poster_path, 'w342')} alt="" className={styles.selectedPoster} />
+            <SmartImage path={data.poster_path} alt="" className={styles.selectedPoster} />
           )}
           <div className={styles.selectedTitle}>{data.title || data.name}</div>
           <div className={styles.selectedRating} style={{ color: accentColor }}>

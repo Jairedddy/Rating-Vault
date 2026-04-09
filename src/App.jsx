@@ -4,6 +4,7 @@ import AnimatedRoutes from './components/transitions/AnimatedRoutes'
 import ParticleField from './components/ambient/ParticleField'
 import SpotlightCursor from './components/ui/SpotlightCursor'
 import ScrollFilmStrip from './components/ui/ScrollFilmStrip'
+import SurpriseMe from './components/ui/SurpriseMe'
 import styles from './App.module.css'
 
 export default function App() {
@@ -17,6 +18,7 @@ export default function App() {
         <main className={styles.main}>
           <AnimatedRoutes />
         </main>
+        <SurpriseMe />
       </div>
     </LayoutGroup>
   )

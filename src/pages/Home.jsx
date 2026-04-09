@@ -5,6 +5,8 @@ import { tmdb } from '../services/tmdb'
 import PageTransition from '../components/transitions/PageTransition'
 import PosterMorph from '../components/transitions/PosterMorph'
 import { ChromeText } from '../components/ui/AnimatedText'
+import SmartImage from '../components/ui/SmartImage'
+import SEO from '../components/SEO'
 import styles from './Home.module.css'
 
 export default function Home() {
@@ -48,6 +50,7 @@ export default function Home() {
 
   return (
     <PageTransition>
+      <SEO url="/" />
       <div className={styles.page}>
         {/* Hero */}
         {hero && (
@@ -119,10 +122,11 @@ function TitleCard({ item, index }) {
     >
       <div className={styles.cardPoster}>
         <PosterMorph layoutId={`poster-${item.media_type}-${item.id}`}>
-          {item.poster_path
-            ? <img src={tmdb.poster(item.poster_path)} alt={item.title || item.name} loading="lazy" />
-            : <div className={styles.cardPosterBlank} />
-          }
+          <SmartImage
+            path={item.poster_path}
+            alt={item.title || item.name}
+            priority={index < 4}
+          />
         </PosterMorph>
         <div className={styles.cardOverlay}>
           <span className={styles.cardRating}>{item.vote_average?.toFixed(1)}</span>

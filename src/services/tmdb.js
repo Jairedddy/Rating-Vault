@@ -75,8 +75,8 @@ export const tmdb = {
   },
 
   // Charts / Trending / Top
-  trending: (mediaType = 'all', timeWindow = 'week') =>
-    get(`/trending/${mediaType}/${timeWindow}`),
+  trending: (mediaType = 'all', timeWindow = 'week', page = 1) =>
+    get(`/trending/${mediaType}/${timeWindow}`, { page }),
 
   topRatedMovies: (page = 1) =>
     get('/movie/top_rated', { page }),
@@ -102,7 +102,65 @@ export const tmdb = {
       include_adult: false,
       page,
     }),
+
+  // Collections
+  collection: (id) => get(`/collection/${id}`),
+  searchCollections: (query) => get('/search/collection', { query, include_adult: false }),
+
+  // Surprise Me — returns { winner, pool } for slot machine
+  discoverRandom: async () => {
+    const mt = Math.random() < 0.5 ? 'movie' : 'tv'
+    const page = Math.floor(Math.random() * 15) + 1
+    const [a, b] = await Promise.all([
+      get('/movie/top_rated', { page }),
+      get('/tv/top_rated', { page: Math.max(1, page - 1) }),
+    ])
+    const all = [
+      ...(a.results || []).map(r => ({ ...r, media_type: 'movie' })),
+      ...(b.results || []).map(r => ({ ...r, media_type: 'tv' })),
+    ].filter(r => r.vote_average >= 7.0 && r.poster_path)
+    const winPool = all.filter(r => r.media_type === mt)
+    if (!winPool.length) return null
+    const winner = winPool[Math.floor(Math.random() * winPool.length)]
+    const pool = [...all].sort(() => Math.random() - 0.5)
+    return { winner, pool }
+  },
+
+  // Genres
+  movieGenres: () => get('/genre/movie/list'),
+  tvGenres: () => get('/genre/tv/list'),
+
+  // Discover (filterable browse)
+  discoverMovies: (filters = {}, page = 1) => get('/discover/movie', {
+    include_adult: false,
+    page,
+    ...filters,
+  }),
+  discoverTV: (filters = {}, page = 1) => get('/discover/tv', {
+    include_adult: false,
+    page,
+    ...filters,
+  }),
 }
+
+// srcSet helpers
+export const posterSrcSet = (path) => path
+  ? ['w92','w154','w185','w342','w500','w780']
+      .map(s => `https://image.tmdb.org/t/p/${s}${path} ${s.slice(1)}w`)
+      .join(', ')
+  : ''
+
+export const backdropSrcSet = (path) => path
+  ? ['w300','w780','w1280']
+      .map(s => `https://image.tmdb.org/t/p/${s}${path} ${s.slice(1)}w`)
+      .join(', ')
+  : ''
+
+export const profileSrcSet = (path) => path
+  ? ['w45','w92','w185']
+      .map(s => `https://image.tmdb.org/t/p/${s}${path} ${s.slice(1)}w`)
+      .join(', ')
+  : ''
 
 // Helpers
 export const getRatingColor = (rating) => {

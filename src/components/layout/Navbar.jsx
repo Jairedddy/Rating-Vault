@@ -1,8 +1,9 @@
 import { useState, useEffect } from 'react'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
-import { Search, X, Film, Tv, BarChart2, GitCompare, Swords, Globe2 } from 'lucide-react'
+import { Search, X, Film, Tv, GitCompare, Swords, Globe2, Compass } from 'lucide-react'
 import { tmdb } from '../../services/tmdb'
 import { VaultLogo } from '../ui/AnimatedText'
+import SmartImage from '../ui/SmartImage'
 import styles from './Navbar.module.css'
 
 export default function Navbar() {
@@ -52,9 +53,9 @@ export default function Navbar() {
         </Link>
 
         <div className={styles.links}>
-          <Link to="/charts" className={`${styles.link} ${isActive('/charts') ? styles.active : ''}`}>
-            <BarChart2 size={14} />
-            Charts
+          <Link to="/discover" className={`${styles.link} ${isActive('/discover') ? styles.active : ''}`}>
+            <Compass size={14} />
+            Discover
           </Link>
           <Link to="/compare" className={`${styles.link} ${isActive('/compare') ? styles.active : ''}`}>
             <GitCompare size={14} />
@@ -108,7 +109,7 @@ export default function Navbar() {
                       className={styles.resultItem}
                     >
                       {r.poster_path
-                        ? <img src={tmdb.poster(r.poster_path, 'w92')} alt="" className={styles.resultPoster} />
+                        ? <SmartImage path={r.poster_path} alt="" className={styles.resultPoster} />
                         : <div className={styles.resultPosterBlank}>{r.media_type === 'movie' ? <Film size={16}/> : <Tv size={16}/>}</div>
                       }
                       <div className={styles.resultInfo}>

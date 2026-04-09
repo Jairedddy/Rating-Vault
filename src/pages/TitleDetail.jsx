@@ -12,6 +12,8 @@ import RatingPulse from '../components/ui/RatingPulse'
 import { GradientText, TypewriterText } from '../components/ui/AnimatedText'
 import GlassCard from '../components/ui/GlassCard'
 import CastCarousel from '../components/ui/CastCarousel'
+import SmartImage from '../components/ui/SmartImage'
+import SEO, { movieJsonLd, tvJsonLd } from '../components/SEO'
 import BehindTheNumbers from '../components/ui/BehindTheNumbers'
 import RatingStory from '../components/storytelling/RatingStory'
 import styles from './TitleDetail.module.css'
@@ -93,8 +95,25 @@ export default function TitleDetail() {
       : 0
   })).filter(s => s.avg > 0)
 
+  const titleName = data.title || data.name
+  const genres = data.genres?.map(g => g.name) || []
+  const ogImage = data.poster_path
+    ? `https://image.tmdb.org/t/p/w500${data.poster_path}`
+    : undefined
+  const jsonLd = type === 'movie'
+    ? movieJsonLd({ id, title: titleName, description: data.overview, posterPath: data.poster_path, year, rating, genres })
+    : tvJsonLd({ id, title: titleName, description: data.overview, posterPath: data.poster_path, year, rating, genres, seasons: data.number_of_seasons })
+
   return (
     <PageTransition>
+      <SEO
+        title={titleName}
+        description={data.overview?.slice(0, 160) || undefined}
+        image={ogImage}
+        url={`/title/${type}/${id}`}
+        type={type === 'movie' ? 'video.movie' : 'video.tv_show'}
+        jsonLd={jsonLd}
+      />
       <div className={styles.page}>
         {/* Backdrop */}
         {data.backdrop_path && (
@@ -110,10 +129,12 @@ export default function TitleDetail() {
           <section className={styles.header}>
             <div className={styles.posterWrap}>
               <PosterMorph layoutId={`poster-${type}-${id}`}>
-                {data.poster_path
-                  ? <img src={tmdb.poster(data.poster_path, 'w342')} alt={data.title || data.name} className={styles.poster} />
-                  : <div className={styles.posterBlank} />
-                }
+                <SmartImage
+                  path={data.poster_path}
+                  alt={data.title || data.name}
+                  className={styles.poster}
+                  priority
+                />
               </PosterMorph>
             </div>
 

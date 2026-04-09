@@ -1,0 +1,39 @@
+.wrap {
+  position: relative;
+  overflow: hidden;
+  width: 100%;
+  aspect-ratio: var(--si-aspect, auto);
+}
+
+.lqip {
+  position: absolute;
+  inset: 0;
+  background-size: cover;
+  background-position: center;
+  filter: blur(12px);
+  transform: scale(1.08);
+}
+
+.img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0;
+  transition: opacity 0.35s ease;
+}
+
+.imgIn {
+  opacity: 1;
+}
+
+.fallback {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(200, 169, 110, 0.06);
+  color: rgba(200, 169, 110, 0.3);
+}
